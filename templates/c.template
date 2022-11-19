@@ -1,7 +1,24 @@
-/**
- * @author      : {{NAME}} ({{EMAIL}})
- * @file        : {{FILE}}
- * @created     : {{TIMESTAMP}}
- */
+/**************************************************************
+ * You can copy the software or lib under the terms of the gnu
+ * general public license v3,which may be found in the source
+ * kit.
+ *
+ * Warning:
+ *   If use the code for bussiness or any act of gain, you must
+ * get my green light with mail or any documentary evidence.
+ *
+ * ReadMe:
+ *  {{CURSOR}}
+ *
+ * File:        {{FILEE}}
+ * Datetime:    {{YEAR}}-{{MONTH}}-{{DATE}} {{TIME}}
+ * Author:      Seapeak.Xu (www.94geek.com)
+ * Mail:        xvhfeng@126.com
+ * Company:     Copyright(c) Myself
+ *
+ **************************************************************/
+
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "{{FILE}}.h"
