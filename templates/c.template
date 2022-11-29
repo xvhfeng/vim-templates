@@ -55,3 +55,5 @@
 #include <stdio.h>
 
 #include "{{FILE}}.h"
+
+const static unsigned long long _{{FILE}}_RAND = {{RAND}};
