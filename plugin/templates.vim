@@ -28,6 +28,30 @@ function <SID>EscapeTemplate(tmpl)
     return escape(a:tmpl, '/')
 endfunction
 
+function <SID>GetLocalTime()
+    let l:time= localtime()
+    if exists("*strftime")
+        return strftime("%c",l:time)
+    else
+        return l:time
+    endif
+endfunction
+
+function <SID>GetRand()
+    if exists("*reltimefloat")
+        return <SID>GetRand_R()
+    endif
+    let l:seed = localtime()
+    let l:value = l:seed % 100
+    return l:value / 100.0
+endfunction
+
+function <SID>GetRand_R()
+    let l:seed = reltimefloat(reltime())
+    let l:value = float2nr(l:seed * 100000) % 100
+    return l:value / 100.0
+endfunction
+
 function <SID>ExpandTemplate(tmpl, value)
     silent! execute '%s/{{'. <SID>EscapeTemplate(a:tmpl) .'}}/'. <SID>EscapeTemplate(a:value) .'/gI'
 endfunction
@@ -56,6 +80,7 @@ function <SID>ExpandTimestampTemplates()
     let l:time              = strftime('%T %Z')
     let l:time_12           = strftime('%r')
     let l:timestamp         = strftime('%A %b %d, %Y %T %Z')
+    let l:rand              = <SID>GetRand()
 
     call <SID>ExpandTemplate('DAY', l:day)
     call <SID>ExpandTemplate('DAY_FULL', l:day_full)
@@ -68,6 +93,7 @@ function <SID>ExpandTimestampTemplates()
     call <SID>ExpandTemplate('TIME', l:time)
     call <SID>ExpandTemplate('TIME_12', l:time_12)
     call <SID>ExpandTemplate('TIMESTAMP', l:timestamp)
+    call <SID>ExpandTemplate('RAND', l:rand)
 endfunction
 
 function <SID>ExpandAuthoringTemplates()
@@ -111,7 +137,7 @@ function <SID>ExpandLicenseFile()
 
     let l:lineno = line('.')
     let l:colno = col('.')
-     " remove license file
+    " remove license file
     s/{{LICENSE_FILE}}//
     call cursor(l:lineno, l:colno)
 
@@ -170,7 +196,7 @@ function <SID>ExpandLanguageTemplates()
     let l:macro_guard_full = <SID>PrepareMacro(@%)
     let l:filename = expand("%:t:r")
     let l:camelclass = <SID>PrepareCamelClass(l:filename)
-	let l:snakeclass = <SID>PrepareSnakeClass(l:filename)
+    let l:snakeclass = <SID>PrepareSnakeClass(l:filename)
 
     call <SID>ExpandTemplate('MACRO_GUARD', l:macro_guard)
     call <SID>ExpandTemplate('MACRO_GUARD_FULL', l:macro_guard_full)
@@ -209,7 +235,7 @@ function <SID>ExpandAllTemplates()
     let l:cursor_found = <SID>MoveCursor()
 
     if !l:cursor_found
-    " return to old cursor position
+        " return to old cursor position
         normal `m
     endif
 endfunction
