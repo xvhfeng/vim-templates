@@ -55,7 +55,7 @@ function <SID>GetLocalTime()
 endfunction
 
 function <SID>GetRand()
-    if exists("*reltimefloat")
+    if exists("*reltime")
         return <SID>GetRand_R()
     endif
     let l:seed = localtime()
