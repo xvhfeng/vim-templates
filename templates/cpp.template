@@ -53,7 +53,14 @@
 
 #include "{{FILE}}.h"
 
-const static unsigned long long _{{FILE}}_RAND = {{RAND}};
+/**
+*  this rand number generate by vim plugin: xvhfeng/vim-template in github
+*  and if you use vim,please install this plugin,
+*  but if you use other editor,please generated in file[c,cpp,h,hpp] by yourself
+**/
+//  @@@===--->>> Not Modify This Number <<<---===@@@
+const static unsigned long long _{{MACRO_GUARD}}_RAND = {{RAND}};
+//  @@@===--->>> Not Modify This Number <<<---===@@@
 
 {{CLASS}}::{{CLASS}}()
 {

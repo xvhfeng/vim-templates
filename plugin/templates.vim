@@ -45,30 +45,6 @@ function <SID>PrepareSnakeClass(str)
     return substitute(substitute(a:str, '^\(\u\)', '\l\1', ''), '\(\u\)', '_\l\1', 'g')
 endfunction
 
-function <SID>GetLocalTime()
-    let l:time= localtime()
-    if exists("*strftime")
-        return strftime("%c",l:time)
-    else
-        return l:time
-    endif
-endfunction
-
-function <SID>GetRand()
-    if exists("*reltime")
-        return <SID>GetRand_R()
-    endif
-    let l:seed = localtime()
-    let l:value = l:seed % 100
-    return l:value / 100.0
-endfunction
-
-function <SID>GetRand_R()
-    let l:seed = reltimefloat(reltime())
-    let l:value = float2nr(l:seed * 100000) % 100
-    return l:value / 100.0
-endfunction
-
 function <SID>ExpandTimestampTemplates()
     let l:day               = strftime('%a')
     let l:day_full          = strftime('%A')
@@ -107,8 +83,15 @@ function <SID>ExpandAuthoringTemplates()
     call <SID>ExpandTemplate('EMAIL', l:author_email)
 endfunction
 
+function GetRand()
+    let l:time = localtime()
+    let l:seed = srand(l:time)
+    let l:numb = rand(l:seed)
+    return l:numb
+endfunction
+
 function <SID>ExpandFilePathTemplates()
-    let l:rand              = <SID>GetRand()
+    let l:time= GetRand()
     call <SID>ExpandTemplate('FILE', expand('%:t:r'))
     call <SID>ExpandTemplate('FILEE', expand('%:t'))
     call <SID>ExpandTemplate('FILEF', expand('%:p'))
@@ -116,7 +99,8 @@ function <SID>ExpandFilePathTemplates()
     call <SID>ExpandTemplate('FILED', expand('%:p:h'))
     call <SID>ExpandTemplate('FILEP', expand('%:h:t'))
     call <SID>ExpandTemplate('FILERD', expand('%:h'))
-    call <SID>ExpandTemplate('RAND', l:rand)
+    echo l:time
+    call <SID>ExpandTemplate('RAND', l:time)
 endfunction
 
 function <SID>ExpandOtherTemplates()
