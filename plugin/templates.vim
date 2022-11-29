@@ -23,9 +23,26 @@ endif
 " CURSOR:       CURSOR
 " LICENSE:      LICENSE, LICENSE_FILE, COPYRIGHT
 " LANGUAGES:    MACRO_GUARD, MACRO_GUARD_FULL, CLASS, CAMEL_CLASS, SNAKE_CLASS
+" Rand:         RAND
 
 function <SID>EscapeTemplate(tmpl)
     return escape(a:tmpl, '/')
+endfunction
+
+function <SID>ExpandTemplate(tmpl, value)
+    silent! execute '%s/{{'. <SID>EscapeTemplate(a:tmpl) .'}}/'. <SID>EscapeTemplate(a:value) .'/gI'
+endfunction
+
+function <SID>PrepareMacro(str)
+    return toupper(tr(a:str, '/.-', '___'))
+endfunction
+
+function <SID>PrepareCamelClass(str)
+    return substitute(substitute(a:str, '\(^\|_\)\(\a\)', '\1\U\2', 'g'), '_', '', 'g')
+endfunction
+
+function <SID>PrepareSnakeClass(str)
+    return substitute(substitute(a:str, '^\(\u\)', '\l\1', ''), '\(\u\)', '_\l\1', 'g')
 endfunction
 
 function <SID>GetLocalTime()
@@ -52,22 +69,6 @@ function <SID>GetRand_R()
     return l:value / 100.0
 endfunction
 
-function <SID>ExpandTemplate(tmpl, value)
-    silent! execute '%s/{{'. <SID>EscapeTemplate(a:tmpl) .'}}/'. <SID>EscapeTemplate(a:value) .'/gI'
-endfunction
-
-function <SID>PrepareMacro(str)
-    return toupper(tr(a:str, '/.-', '___'))
-endfunction
-
-function <SID>PrepareCamelClass(str)
-    return substitute(substitute(a:str, '\(^\|_\)\(\a\)', '\1\U\2', 'g'), '_', '', 'g')
-endfunction
-
-function <SID>PrepareSnakeClass(str)
-    return substitute(substitute(a:str, '^\(\u\)', '\l\1', ''), '\(\u\)', '_\l\1', 'g')
-endfunction
-
 function <SID>ExpandTimestampTemplates()
     let l:day               = strftime('%a')
     let l:day_full          = strftime('%A')
@@ -80,7 +81,6 @@ function <SID>ExpandTimestampTemplates()
     let l:time              = strftime('%T %Z')
     let l:time_12           = strftime('%r')
     let l:timestamp         = strftime('%A %b %d, %Y %T %Z')
-    let l:rand              = <SID>GetRand()
 
     call <SID>ExpandTemplate('DAY', l:day)
     call <SID>ExpandTemplate('DAY_FULL', l:day_full)
@@ -93,7 +93,6 @@ function <SID>ExpandTimestampTemplates()
     call <SID>ExpandTemplate('TIME', l:time)
     call <SID>ExpandTemplate('TIME_12', l:time_12)
     call <SID>ExpandTemplate('TIMESTAMP', l:timestamp)
-    call <SID>ExpandTemplate('RAND', l:rand)
 endfunction
 
 function <SID>ExpandAuthoringTemplates()
@@ -109,6 +108,7 @@ function <SID>ExpandAuthoringTemplates()
 endfunction
 
 function <SID>ExpandFilePathTemplates()
+    let l:rand              = <SID>GetRand()
     call <SID>ExpandTemplate('FILE', expand('%:t:r'))
     call <SID>ExpandTemplate('FILEE', expand('%:t'))
     call <SID>ExpandTemplate('FILEF', expand('%:p'))
@@ -116,6 +116,7 @@ function <SID>ExpandFilePathTemplates()
     call <SID>ExpandTemplate('FILED', expand('%:p:h'))
     call <SID>ExpandTemplate('FILEP', expand('%:h:t'))
     call <SID>ExpandTemplate('FILERD', expand('%:h'))
+    call <SID>ExpandTemplate('RAND', l:rand)
 endfunction
 
 function <SID>ExpandOtherTemplates()
