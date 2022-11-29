@@ -92,6 +92,7 @@ endfunction
 
 function <SID>ExpandFilePathTemplates()
     let l:rand= GetRand()
+    let l:rand32 = and(l:rand,0xFFFFFFFF)
     call <SID>ExpandTemplate('FILE', expand('%:t:r'))
     call <SID>ExpandTemplate('FILEE', expand('%:t'))
     call <SID>ExpandTemplate('FILEF', expand('%:p'))

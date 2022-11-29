@@ -54,12 +54,13 @@
 #include "{{FILE}}.h"
 
 /**
-*  this rand number generate by vim plugin: xvhfeng/vim-template in github
-*  and if you use vim,please install this plugin,
-*  but if you use other editor,please generated in file[c,cpp,h,hpp] by yourself
+*   this rand number generate by vim plugin: xvhfeng/vim-template in github
+*   and if you use vim,please install this plugin,
+*   but if you use other editor,please generated in file[c,cpp,h,hpp] by yourself
+*   this Rand is allways 32bit number as same as in x64 system
 **/
 //  @@@===--->>> Not Modify This Number <<<---===@@@
-const static unsigned long long _{{MACRO_GUARD}}_RAND = {{RAND}};
+const static unsigned long _{{MACRO_GUARD}}_RAND = {{RAND}};
 //  @@@===--->>> Not Modify This Number <<<---===@@@
 
 {{CLASS}}::{{CLASS}}()
