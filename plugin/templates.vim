@@ -91,7 +91,7 @@ function GetRand()
 endfunction
 
 function <SID>ExpandFilePathTemplates()
-    let l:time= GetRand()
+    let l:rand= GetRand()
     call <SID>ExpandTemplate('FILE', expand('%:t:r'))
     call <SID>ExpandTemplate('FILEE', expand('%:t'))
     call <SID>ExpandTemplate('FILEF', expand('%:p'))
@@ -99,8 +99,7 @@ function <SID>ExpandFilePathTemplates()
     call <SID>ExpandTemplate('FILED', expand('%:p:h'))
     call <SID>ExpandTemplate('FILEP', expand('%:h:t'))
     call <SID>ExpandTemplate('FILERD', expand('%:h'))
-    echo l:time
-    call <SID>ExpandTemplate('RAND', l:time)
+    call <SID>ExpandTemplate('RAND', l:rand)
 endfunction
 
 function <SID>ExpandOtherTemplates()
